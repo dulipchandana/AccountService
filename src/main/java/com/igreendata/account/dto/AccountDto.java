@@ -1,12 +1,15 @@
 package com.igreendata.account.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.igreendata.account.controller.AccountController;
 import lombok.Getter;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * AccountDto hold values for /accounts/ api.
@@ -14,10 +17,19 @@ import java.util.Date;
  * @author Dulip Chandana
  */
 
-public class AccountDto extends BaseDto {
+public class AccountDto extends RepresentationModel<AccountDto> {
 
     private static final SimpleDateFormat dateFormat
             = new SimpleDateFormat("dd/MM/YYYY");
+
+    @Getter
+    private final Long accountNumber;
+
+    @Getter
+    private final String accountName;
+
+    @Getter
+    private final String currency;
 
     @Getter
     private final String accountType;
@@ -44,13 +56,18 @@ public class AccountDto extends BaseDto {
      */
     public AccountDto(final Long accountNumber, final String accountName, final String currency,
                       final String accountType, final Date balanceDate, final Double availableBalance) {
-        super(accountNumber, accountName, currency);
         this.accountType = accountType;
         this.availableBalance = availableBalance;
+        this.accountNumber = accountNumber;
+        this.accountName = accountName;
+        this.currency = currency;
+        this.add(setHateoas(accountNumber));
         setBalanceDate(balanceDate);
-
-
     }
 
+    private Link setHateoas(final Long accountNumber) {
+        return linkTo(methodOn(AccountController.class)
+                .getTransactionsByAccountId(accountNumber)).withSelfRel();
+    }
 
 }

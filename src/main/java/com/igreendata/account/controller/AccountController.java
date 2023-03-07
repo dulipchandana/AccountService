@@ -3,18 +3,20 @@ package com.igreendata.account.controller;
 import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.service.BankService;
-import com.igreendata.account.util.AccountConstant;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * AccountController for handle /accounts/ and /transactions/ api .
@@ -37,40 +39,30 @@ public class AccountController {
 
     /**
      * Get Account dto list with pagination parameters
+     *
      * @param userId
-     * @param pageable
      * @return Page<AccountDto>
      */
-    @GetMapping("/accounts/{userId}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = AccountConstant.PAGE, dataType = AccountConstant.INTEGER, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.PAGE_DESC),
-            @ApiImplicitParam(name = AccountConstant.SIZE, dataType = AccountConstant.INTEGER, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.SIZE_DESC),
-            @ApiImplicitParam(name = AccountConstant.SORT, allowMultiple = true, dataType = AccountConstant.STRING, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.SORT_DESC)
-    })
-    public Page<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId, final Pageable pageable) {
-        return accountService.getDtoById(userId, pageable);
+    @GetMapping(value = "/accounts/{userId}", produces = {"application/hal+json"})
+    public CollectionModel<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
+
+        List<AccountDto> accountDtos = accountService.getDtoById(userId);
+
+        return new CollectionModel<AccountDto>(accountDtos);
     }
 
     /**
      * Get transactionDto list with pagination parameters
+     *
      * @param accountId
-     * @param pageable
      * @return Page<TransactionDto>
      */
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = AccountConstant.PAGE, dataType = AccountConstant.INTEGER, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.PAGE_DESC),
-            @ApiImplicitParam(name = AccountConstant.SIZE, dataType = AccountConstant.INTEGER, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.SIZE_DESC),
-            @ApiImplicitParam(name = AccountConstant.SORT, allowMultiple = true, dataType = AccountConstant.STRING, paramType = AccountConstant.QUERY,
-                    value = AccountConstant.SORT_DESC)
-    })
-    @GetMapping("transactions/{accountId}")
-    public Page<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId")
-                                                                   final Long accountId, final Pageable pageable) {
-        return transactionService.getDtoById(accountId, pageable);
+    @GetMapping(value = "transactions/{accountId}", produces = {"application/hal+json"})
+    public CollectionModel<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
+
+        List<TransactionDto> transactionDtos = transactionService.getDtoById(accountId);
+        Link link = linkTo(methodOn(AccountController.class).getAccountsByUserId
+                (transactionDtos.stream().findFirst().get().getUserId())).withSelfRel();
+        return new CollectionModel<>(transactionDtos, link);
     }
 }

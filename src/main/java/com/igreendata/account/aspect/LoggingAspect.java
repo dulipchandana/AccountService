@@ -14,8 +14,8 @@ import java.util.Arrays;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
- * @author Dulip Chandana
  *
+ * @author Dulip Chandana
  */
 @Aspect
 @Component
@@ -36,12 +36,12 @@ public class LoggingAspect {
      * Advice that logs methods throwing exceptions.
      *
      * @param joinPoint join point for advice
-     * @param e exception
+     * @param e         exception
      */
     @AfterThrowing(pointcut = "applicationPackagePointcut() ", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         log.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                joinPoint.getSignature().getName(), e.getStackTrace()!= null ? e.getStackTrace() : "NULL");
+                joinPoint.getSignature().getName(), e.getStackTrace() != null ? e.getStackTrace() : "NULL");
     }
 
     /**

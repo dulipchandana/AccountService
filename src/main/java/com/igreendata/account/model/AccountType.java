@@ -3,7 +3,6 @@ package com.igreendata.account.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Data
-public class AccountType  implements Serializable {
+public class AccountType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

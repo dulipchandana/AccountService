@@ -7,9 +7,9 @@ import com.igreendata.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * TransactionServiceImpl service implementations for transactions  .
@@ -27,15 +27,14 @@ public class TransactionServiceImpl implements BankService<TransactionDto> {
      * Get TransactionDto page list with filtering accountId
      *
      * @param accountId
-     * @param pageable
      * @return
      */
     @Override
-    public Page<TransactionDto> getDtoById(final Long accountId, final Pageable pageable) {
+    public List<TransactionDto> getDtoById(final Long accountId) {
 
         try {
-            Page<TransactionDto> transactionDtoResults = transactionRepository.findAccountAccountId
-                    (accountId, pageable);
+            List<TransactionDto> transactionDtoResults = transactionRepository.findAccountAccountId
+                    (accountId);
             if (!transactionDtoResults.isEmpty()) {
                 return transactionDtoResults;
             } else {
@@ -43,7 +42,7 @@ public class TransactionServiceImpl implements BankService<TransactionDto> {
             }
 
         } catch (InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
-            throw new IncorrectParameterException("Transaction", "Sort", pageable.getSort());
+            throw new IncorrectParameterException("Transaction", "Sort", accountId);
 
         }
     }
