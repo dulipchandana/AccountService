@@ -2,7 +2,10 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.4.0'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "com.avast.gradle.docker-compose" version "0.16.9"
 }
+
+apply plugin: 'docker-compose'
 
 group = 'com.igreendata.account'
 version = '0.0.1-SNAPSHOT'
@@ -41,3 +44,17 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+dockerCompose {
+	useComposeFiles = ['docker-compose.yml']
+	forceRecreate = true
+}
+
+task startLocalEnvironment {
+	dependsOn += ["composeUp"]
+}
+
+task stopLocalEnvironment {
+	dependsOn += ["composeDown"]
+}
+
