@@ -2,7 +2,8 @@ package com.igreendata.account.controller;
 
 import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.dto.TransactionDto;
-import com.igreendata.account.service.BankService;
+import com.igreendata.account.service.AccountService;
+import com.igreendata.account.service.TransactionService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,10 +32,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AccountController {
 
     @Qualifier("com.igreendata.account.service.AccountServiceImpl")
-    private final BankService<AccountDto> accountService;
+    private final AccountService accountService;
 
     @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
-    private final BankService<TransactionDto> transactionService;
+    private final TransactionService transactionService;
 
 
     /**
@@ -46,7 +47,7 @@ public class AccountController {
     @GetMapping(value = "users/{userId}/accounts/", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
 
-        List<AccountDto> accountDtos = accountService.getDtoById(userId);
+        List<AccountDto> accountDtos = accountService.getAccountsByUserId(userId);
 
         return new CollectionModel<AccountDto>(accountDtos);
     }
@@ -60,7 +61,7 @@ public class AccountController {
     @GetMapping(value = "accounts/{accountId}/transactions/", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
 
-        List<TransactionDto> transactionDtos = transactionService.getDtoById(accountId);
+        List<TransactionDto> transactionDtos = transactionService.getTransactionDtoByAccountId(accountId);
         Link link = linkTo(methodOn(AccountController.class).getAccountsByUserId
                 (transactionDtos.stream().findFirst().get().getUserId())).withSelfRel();
         return new CollectionModel<>(transactionDtos, link);

@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
 @AllArgsConstructor
-public class TransactionServiceImpl implements BankService<TransactionDto> {
+public class TransactionServiceImpl implements TransactionService {
 
 
     private final TransactionRepository transactionRepository;
@@ -30,7 +30,7 @@ public class TransactionServiceImpl implements BankService<TransactionDto> {
      * @return List<TransactionDto> - transaction id
      */
     @Override
-    public List<TransactionDto> getDtoById(final Long accountId) {
+    public List<TransactionDto> getTransactionDtoByAccountId(final Long accountId) {
 
         try {
             List<TransactionDto> transactionDtoResults = transactionRepository.findTransactionByAccountId

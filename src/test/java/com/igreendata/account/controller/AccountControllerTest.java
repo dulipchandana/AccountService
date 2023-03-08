@@ -5,7 +5,8 @@ import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.model.TransactionType;
-import com.igreendata.account.service.BankService;
+import com.igreendata.account.service.AccountService;
+import com.igreendata.account.service.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,11 +37,11 @@ public class AccountControllerTest {
 
     @MockBean
     @Qualifier("com.igreendata.account.service.AccountServiceImpl")
-    private BankService<AccountDto> accountService;
+    private AccountService accountService;
 
     @MockBean
     @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
-    private BankService<TransactionDto> transactionService;
+    private TransactionService transactionService;
 
     @Test
     public void getAccountsByUserIdWithResult() throws Exception {
@@ -48,7 +49,7 @@ public class AccountControllerTest {
         AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", new Date(), 5D);
         AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", new Date(), 6D);
         List<AccountDto> acList = Arrays.asList(accountDto1, accountDto2);
-        given(accountService.getDtoById(1L)).willReturn(acList);
+        given(accountService.getAccountsByUserId(1L)).willReturn(acList);
         this.mockMvc.perform(get("/api/users/1/accounts/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$._embedded.accountDtoList.[0].accountNumber").value(99))
@@ -67,26 +68,26 @@ public class AccountControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$._embedded.accountDtoList.[1]._links.self.href").value("/api/accounts/100/transactions/"));
 
         //verify the behavior
-        verify(accountService).getDtoById(1L);
+        verify(accountService).getAccountsByUserId(1L);
 
 
     }
 
     @Test
     void getAccountsByUserIdWithNoResult() throws Exception {
-        given(accountService.getDtoById(1L)).willThrow(ResourceNotFoundException.class);
+        given(accountService.getAccountsByUserId(1L)).willThrow(ResourceNotFoundException.class);
         this.mockMvc.perform(get("/api/users/1/accounts/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isNotFound());
-        verify(accountService).getDtoById(1L);
+        verify(accountService).getAccountsByUserId(1L);
 
     }
 
     @Test
     void getAccountsByUserIdWithDbException() throws Exception {
-        given(accountService.getDtoById(1L)).willThrow(ServiceException.class);
+        given(accountService.getAccountsByUserId(1L)).willThrow(ServiceException.class);
         this.mockMvc.perform(get("/api/users/1/accounts/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isBadGateway());
-        verify(accountService).getDtoById(1L);
+        verify(accountService).getAccountsByUserId(1L);
 
     }
 
@@ -94,7 +95,7 @@ public class AccountControllerTest {
     public void getTransactionsByAccountIdWithResult() throws Exception {
         TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", new Date(), 12D, 3D, TransactionType.Credit, "NC", 1L);
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);
-        given(transactionService.getDtoById(1L)).willReturn(transactionDtoList);
+        given(transactionService.getTransactionDtoByAccountId(1L)).willReturn(transactionDtoList);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$._embedded.transactionDtoList.[0].accountNumber").value(1))
@@ -107,25 +108,25 @@ public class AccountControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$._embedded.transactionDtoList.[0].transactionNarrative").value("NC"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$._embedded.transactionDtoList.[0].userId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$._links.self.href").value("http://localhost/api/users/1/accounts/"));
-        verify(transactionService).getDtoById(1L);
+        verify(transactionService).getTransactionDtoByAccountId(1L);
 
     }
 
     @Test
     void getTransactionWithNoResult() throws Exception {
-        given(transactionService.getDtoById(1L)).willThrow(ResourceNotFoundException.class);
+        given(transactionService.getTransactionDtoByAccountId(1L)).willThrow(ResourceNotFoundException.class);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isNotFound());
-        verify(transactionService).getDtoById(1L);
+        verify(transactionService).getTransactionDtoByAccountId(1L);
 
     }
 
     @Test
     void getTransactionWithDbException() throws Exception {
-        given(transactionService.getDtoById(1L)).willThrow(ServiceException.class);
+        given(transactionService.getTransactionDtoByAccountId(1L)).willThrow(ServiceException.class);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isBadGateway());
-        verify(transactionService).getDtoById(1L);
+        verify(transactionService).getTransactionDtoByAccountId(1L);
 
     }
 

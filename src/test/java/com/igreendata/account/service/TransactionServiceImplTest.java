@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,14 +39,14 @@ public class TransactionServiceImplTest {
                 , 3D, TransactionType.Credit, "NC", 1L);
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);
         given(transactionRepository.findTransactionByAccountId(1L)).willReturn(transactionDtoList);
-        assertThat(transactionService.getDtoById(1L)).isEqualTo(transactionDtoList);
+        assertThat(transactionService.getTransactionDtoByAccountId(1L)).isEqualTo(transactionDtoList);
     }
 
     @Test
     void getTransactionWithNoResult() throws Exception {
         given(transactionRepository.findTransactionByAccountId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
-                assertThrows(ResourceNotFoundException.class, () -> transactionService.getDtoById(1L));
+                assertThrows(ResourceNotFoundException.class, () -> transactionService.getTransactionDtoByAccountId(1L));
         assertThat(exception.getMessage()).isEqualTo("Transaction not found with accountId : '1'");
 
     }
@@ -56,7 +55,7 @@ public class TransactionServiceImplTest {
     void getTransactionWithDbException() throws Exception {
         given(transactionRepository.findTransactionByAccountId(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
-                assertThrows(ServiceException.class, () -> transactionService.getDtoById(1L));
+                assertThrows(ServiceException.class, () -> transactionService.getTransactionDtoByAccountId(1L));
         assertThat(serviceException.getMessage()).isEqualTo("Transaction Service Exception . accountId : '1'");
     }
 }

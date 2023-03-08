@@ -38,7 +38,7 @@ public class AccountServiceImplTest {
         AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", new Date(), 6D);
         List<AccountDto> acList = Arrays.asList(accountDto1, accountDto2);
         given(accountRepository.findAccountByUserId(1L)).willReturn(acList);
-        assertThat(accountService.getDtoById(1L)).isEqualTo(acList);
+        assertThat(accountService.getAccountsByUserId(1L)).isEqualTo(acList);
         verify(accountRepository).findAccountByUserId(1L);
     }
 
@@ -46,7 +46,7 @@ public class AccountServiceImplTest {
     void getAccountsByUserIdWithNoResult() {
         given(accountRepository.findAccountByUserId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
-                assertThrows(ResourceNotFoundException.class, () -> accountService.getDtoById(1L));
+                assertThrows(ResourceNotFoundException.class, () -> accountService.getAccountsByUserId(1L));
         assertThat(exception.getMessage()).isEqualTo("Account not found with userId : '1'");
     }
 
@@ -54,7 +54,7 @@ public class AccountServiceImplTest {
     void getAccountsByUserIdWithDbException() {
         given(accountRepository.findAccountByUserId(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
-                assertThrows(ServiceException.class, () -> accountService.getDtoById(1L));
+                assertThrows(ServiceException.class, () -> accountService.getAccountsByUserId(1L));
         assertThat(serviceException.getMessage()).isEqualTo("Account Service Exception . userId : '1'");
     }
 
