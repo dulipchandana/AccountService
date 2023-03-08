@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -47,13 +46,13 @@ public class AccountServiceImplTest {
     void getAccountsByUserIdWithNoResult() {
         given(accountRepository.findAccountByUserId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
-                assertThrows(ResourceNotFoundException.class,() ->accountService.getDtoById(1L)) ;
+                assertThrows(ResourceNotFoundException.class, () -> accountService.getDtoById(1L));
     }
 
     @Test
     void getAccountsByUserIdWithDbException() {
         given(accountRepository.findAccountByUserId(1L)).willThrow(QueryTimeoutException.class);
-        assertThrows(ServiceException.class,() ->accountService.getDtoById(1L)) ;
+        assertThrows(ServiceException.class, () -> accountService.getDtoById(1L));
     }
 
 
