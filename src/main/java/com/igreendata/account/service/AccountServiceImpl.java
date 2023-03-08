@@ -4,6 +4,7 @@ import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.repository.AccountRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,10 @@ import java.util.List;
  */
 @Service
 @Qualifier("com.igreendata.account.service.AccountServiceImpl")
+@AllArgsConstructor
 public class AccountServiceImpl implements BankService<AccountDto> {
 
-    @Autowired
-    AccountRepository<AccountDto> accountRepository;
+    private final AccountRepository<AccountDto> accountRepository;
 
     /**
      * Get Accountdto Page list with filtering User Id

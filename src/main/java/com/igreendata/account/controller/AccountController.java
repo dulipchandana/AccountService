@@ -4,6 +4,7 @@ import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.service.BankService;
 import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.CollectionModel;
@@ -26,15 +27,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/api")
 @Api(value = "accountServices", description = "Bank service in Account Department.")
+@AllArgsConstructor
 public class AccountController {
 
-    @Autowired
     @Qualifier("com.igreendata.account.service.AccountServiceImpl")
-    private BankService<AccountDto> accountService;
+    private final BankService<AccountDto> accountService;
 
-    @Autowired
     @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
-    private BankService<TransactionDto> transactionService;
+    private final BankService<TransactionDto> transactionService;
 
 
     /**
