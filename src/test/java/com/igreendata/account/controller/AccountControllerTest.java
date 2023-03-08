@@ -9,7 +9,6 @@ import com.igreendata.account.service.AccountService;
 import com.igreendata.account.service.TransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,11 +35,9 @@ public class AccountControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    @Qualifier("com.igreendata.account.service.AccountServiceImpl")
     private AccountService accountService;
 
     @MockBean
-    @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
     private TransactionService transactionService;
 
     @Test

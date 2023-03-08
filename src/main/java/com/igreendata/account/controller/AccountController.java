@@ -6,7 +6,6 @@ import com.igreendata.account.service.AccountService;
 import com.igreendata.account.service.TransactionService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
@@ -31,10 +30,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class AccountController {
 
-    @Qualifier("com.igreendata.account.service.AccountServiceImpl")
     private final AccountService accountService;
 
-    @Qualifier("com.igreendata.account.service.TransactionServiceImpl")
     private final TransactionService transactionService;
 
 
