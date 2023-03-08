@@ -1,6 +1,6 @@
 package com.igreendata.account.dto;
 
-import com.igreendata.account.model.TransactionType;
+import com.igreendata.account.entity.TransactionType;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;

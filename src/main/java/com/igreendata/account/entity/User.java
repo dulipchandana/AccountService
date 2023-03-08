@@ -1,9 +1,8 @@
-package com.igreendata.account.model;
+package com.igreendata.account.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "user")

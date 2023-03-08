@@ -1,7 +1,7 @@
 package com.igreendata.account.repository;
 
 import com.igreendata.account.dto.AccountDto;
-import com.igreendata.account.model.Account;
+import com.igreendata.account.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

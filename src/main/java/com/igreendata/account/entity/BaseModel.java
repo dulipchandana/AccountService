@@ -1,4 +1,4 @@
-package com.igreendata.account.model;
+package com.igreendata.account.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

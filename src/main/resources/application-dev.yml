@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: AccountService
+  datasource:
+    platform: mariadb
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://{DEV-DB}:3306/bank-sys?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: root
+    initialization-mode: none
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always

@@ -3,7 +3,7 @@ package com.igreendata.account.service;
 import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
-import com.igreendata.account.model.TransactionType;
+import com.igreendata.account.entity.TransactionType;
 import com.igreendata.account.repository.TransactionRepository;
 import org.hibernate.QueryTimeoutException;
 import org.junit.jupiter.api.Test;
