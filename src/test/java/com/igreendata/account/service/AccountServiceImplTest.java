@@ -47,7 +47,7 @@ public class AccountServiceImplTest {
         given(accountRepository.findAccountByUserId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
                 assertThrows(ResourceNotFoundException.class, () -> accountService.getDtoById(1L));
-        assertThat(exception.getMessage()).isEqualTo("Account not found not found with userId : '1'");
+        assertThat(exception.getMessage()).isEqualTo("Account not found with userId : '1'");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class AccountServiceImplTest {
         given(accountRepository.findAccountByUserId(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
                 assertThrows(ServiceException.class, () -> accountService.getDtoById(1L));
-        assertThat(serviceException.getMessage()).isEqualTo("Account Service Error Service Exception . userId : '1'");
+        assertThat(serviceException.getMessage()).isEqualTo("Account Service Exception . userId : '1'");
     }
 
 

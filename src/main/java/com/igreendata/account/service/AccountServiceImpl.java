@@ -36,12 +36,12 @@ public class AccountServiceImpl implements BankService<AccountDto> {
             if (!accountDtoResults.isEmpty()) {
                 return accountDtoResults;
             } else {
-                throw new ResourceNotFoundException("Account not found", "userId", id);
+                throw new ResourceNotFoundException("Account", "userId", id);
             }
         } catch (ResourceNotFoundException re) {
             throw re;
         } catch (Exception ex) {
-            throw new ServiceException("Account Service Error", "userId", id);
+            throw new ServiceException("Account", "userId", id);
         }
     }
 }
