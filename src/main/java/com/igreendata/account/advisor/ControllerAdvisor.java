@@ -1,12 +1,12 @@
 package com.igreendata.account.advisor;
 
-import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.exception.ResourceNotFoundException;
+import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.util.AccountConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -19,13 +19,13 @@ import java.util.Map;
  *
  * @author Dulip Chandana
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     /**
      * handleResourceNotFoundException
      *
-     * @param ex exception
+     * @param ex      exception
      * @param request request
      * @return ResponseEntity<Object>
      */
@@ -43,7 +43,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     /**
      * IncorrectParameterException exception handler
      *
-     * @param ex exception
+     * @param ex      exception
      * @param request request
      * @return ResponseEntity<Object>
      */

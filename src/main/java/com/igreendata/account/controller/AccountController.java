@@ -43,7 +43,7 @@ public class AccountController {
      * @param userId
      * @return Page<AccountDto>
      */
-    @GetMapping(value = "/accounts/{userId}", produces = {MediaTypes.HAL_JSON_VALUE})
+    @GetMapping(value = "users/{userId}/accounts/", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
 
         List<AccountDto> accountDtos = accountService.getDtoById(userId);
@@ -57,7 +57,7 @@ public class AccountController {
      * @param accountId
      * @return Page<TransactionDto>
      */
-    @GetMapping(value = "transactions/{accountId}", produces = {MediaTypes.HAL_JSON_VALUE})
+    @GetMapping(value = "accounts/{accountId}/transactions/", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
 
         List<TransactionDto> transactionDtos = transactionService.getDtoById(accountId);

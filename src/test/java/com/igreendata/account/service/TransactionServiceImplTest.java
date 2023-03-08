@@ -3,8 +3,8 @@ package com.igreendata.account.service;
 import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
-import com.igreendata.account.repository.AccountRepository;
-import com.igreendata.account.util.TransactionType;
+import com.igreendata.account.model.TransactionType;
+import com.igreendata.account.repository.TransactionRepository;
 import org.hibernate.QueryTimeoutException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,32 +31,32 @@ public class TransactionServiceImplTest {
     TransactionServiceImpl transactionService;
 
     @Mock
-    AccountRepository accountRepository;
+    TransactionRepository transactionRepository;
 
 
     @Test
     public void getTransactionsByAccountIdWithResult() throws Exception {
         TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", new Date(), 12D
                 , 3D, TransactionType.Credit, "NC", 1L);
-        List<TransactionDto> transactionDtoList = Arrays.asList(tansactionDto);
-        given(accountRepository.findAccountAccountId(1L)).willReturn(transactionDtoList);
+        List<TransactionDto> transactionDtoList = List.of(tansactionDto);
+        given(transactionRepository.findTransactionByAccountId(1L)).willReturn(transactionDtoList);
         assertThat(transactionService.getDtoById(1L)).isEqualTo(transactionDtoList);
     }
 
     @Test
     void getTransactionWithNoResult() throws Exception {
-        given(accountRepository.findAccountAccountId(1L)).willReturn(new ArrayList());
+        given(transactionRepository.findTransactionByAccountId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
-                assertThrows(ResourceNotFoundException.class,() ->transactionService.getDtoById(1L)) ;
+                assertThrows(ResourceNotFoundException.class, () -> transactionService.getDtoById(1L));
         assertThat(exception.getMessage()).isEqualTo("Transaction not found with accountId : '1'");
 
     }
 
     @Test
     void getTransactionWithDbException() throws Exception {
-        given(accountRepository.findAccountAccountId(1L)).willThrow(QueryTimeoutException.class);
+        given(transactionRepository.findTransactionByAccountId(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
-                assertThrows(ServiceException.class,() ->transactionService.getDtoById(1L)) ;
+                assertThrows(ServiceException.class, () -> transactionService.getDtoById(1L));
         assertThat(serviceException.getMessage()).isEqualTo("Transaction Service Exception . accountId : '1'");
     }
 }

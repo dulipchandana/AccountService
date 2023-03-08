@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountServiceImpl implements BankService<AccountDto> {
 
-    private final AccountRepository<AccountDto> accountRepository;
+    private final AccountRepository accountRepository;
 
     /**
      * Get AccountDto list with filtering User id

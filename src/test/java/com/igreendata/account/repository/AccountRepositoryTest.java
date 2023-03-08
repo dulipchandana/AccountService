@@ -1,7 +1,6 @@
 package com.igreendata.account.repository;
 
 import com.igreendata.account.dto.AccountDto;
-import com.igreendata.account.dto.TransactionDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,21 +25,13 @@ public class AccountRepositoryTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    private AccountRepository<AccountDto> accountRepository;
+    private AccountRepository accountRepository;
 
-    @Autowired
-    private AccountRepository<TransactionDto> transactionRepository;
 
     @Test
     public void findAccountByUserId_if_repository_is_empty() {
         List<AccountDto> accountDtoList = accountRepository.findAccountByUserId(5L);
         assertThat(accountDtoList.isEmpty()).isTrue();
-    }
-
-    @Test
-    public void findTransactions_if_repository_is_empty() {
-        List<TransactionDto> transactionDtoList = transactionRepository.findAccountAccountId(7L);
-        assertThat(transactionDtoList.isEmpty()).isTrue();
     }
 
     @Test
@@ -56,18 +47,6 @@ public class AccountRepositoryTest {
                         a.getAccountName().equals("USSavings33") &&
                         a.getCurrency().equals("USD"))
         )).isTrue();
-
-    }
-
-    @Test
-    public void findTransaction_with_Data() {
-        List<TransactionDto> transactionDtoList = transactionRepository.findAccountAccountId(2L);
-        assertThat(transactionDtoList.size()).isEqualTo(1);
-        assertThat(transactionDtoList.stream().anyMatch(b -> (b.getAccountNumber() == 2D) &&
-                b.getAccountName().equals("SGSavings2334") &&
-                b.getCurrency().equals("SGD") &&
-                b.getCreditAmount().equals(4545.09) &&
-                (b.getUserId() == 2D))).isTrue();
 
     }
 }

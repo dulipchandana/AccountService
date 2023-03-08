@@ -1,4 +1,4 @@
-package com.igreendata.account.util;
+package com.igreendata.account.model;
 
 public enum TransactionType {
     Credit, Debit

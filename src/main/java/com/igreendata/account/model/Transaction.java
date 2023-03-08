@@ -1,7 +1,8 @@
 package com.igreendata.account.model;
 
-import com.igreendata.account.util.TransactionType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
-public class Transaction extends BaseModel{
+public class Transaction extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
