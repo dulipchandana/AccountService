@@ -41,11 +41,13 @@ public class AccountRepositoryTest {
         assertThat(accountDtos.stream().anyMatch(a -> ((a.getAccountNumber() == 1D) &&
                 a.getAvailableBalance().equals(12.34) &&
                 a.getAccountName().equals("AUSavings23") &&
-                a.getCurrency().equals("AUD") ||
+                a.getCurrency().equals("AUD") &&
+                a.getLinks().stream().findFirst().get().getHref().equals("/api/accounts/1/transactions/")||
                 (a.getAccountNumber() == 3D) &&
                         a.getAvailableBalance().equals(1234) &&
                         a.getAccountName().equals("USSavings33") &&
-                        a.getCurrency().equals("USD"))
+                        a.getCurrency().equals("USD") &&
+                        a.getLinks().stream().findFirst().get().getHref().equals("/api/accounts/3/transactions/"))
         )).isTrue();
 
     }

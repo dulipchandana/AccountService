@@ -32,7 +32,6 @@ public class TransactionRepositoryTest {
         assertThat(transactionDtoList.isEmpty()).isTrue();
     }
 
-
     @Test
     public void findTransaction_with_Data() {
         List<TransactionDto> transactionDtoList = transactionRepository.findTransactionByAccountId(2L);
