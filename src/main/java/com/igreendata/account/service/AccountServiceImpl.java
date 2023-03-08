@@ -23,10 +23,10 @@ public class AccountServiceImpl implements BankService<AccountDto> {
     private final AccountRepository<AccountDto> accountRepository;
 
     /**
-     * Get Accountdto Page list with filtering User Id
+     * Get AccountDto list with filtering User id
      *
-     * @param id
-     * @return Page<AccountDto>
+     * @param id - userId
+     * @return List<AccountDto> - account list
      */
     @Override
     public List<AccountDto> getDtoById(final Long id) {

@@ -25,10 +25,10 @@ public class TransactionServiceImpl implements BankService<TransactionDto> {
     private final AccountRepository<TransactionDto> transactionRepository;
 
     /**
-     * Get TransactionDto page list with filtering accountId
+     * Get TransactionDto list with filtering accountId
      *
-     * @param accountId
-     * @return
+     * @param accountId - Long account id
+     * @return List<TransactionDto> - transaction id
      */
     @Override
     public List<TransactionDto> getDtoById(final Long accountId) {
