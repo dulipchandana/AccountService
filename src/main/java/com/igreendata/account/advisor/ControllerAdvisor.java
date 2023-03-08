@@ -25,8 +25,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     /**
      * handleResourceNotFoundException
      *
-     * @param ex
-     * @param request
+     * @param ex exception
+     * @param request request
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -43,8 +43,8 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     /**
      * IncorrectParameterException exception handler
      *
-     * @param ex
-     * @param request
+     * @param ex exception
+     * @param request request
      * @return ResponseEntity<Object>
      */
     @ExceptionHandler(ServiceException.class)
