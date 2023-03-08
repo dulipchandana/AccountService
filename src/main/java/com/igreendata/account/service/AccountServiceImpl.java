@@ -1,12 +1,11 @@
 package com.igreendata.account.service;
 
 import com.igreendata.account.dto.AccountDto;
-import com.igreendata.account.exception.IncorrectParameterException;
 import com.igreendata.account.exception.ResourceNotFoundException;
+import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,9 +38,10 @@ public class AccountServiceImpl implements BankService<AccountDto> {
             } else {
                 throw new ResourceNotFoundException("Account", "userId", id);
             }
-        } catch (InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
-            throw new IncorrectParameterException("Account", "userId", id);
-
+        } catch (ResourceNotFoundException re) {
+            throw re;
+        } catch (Exception ex) {
+            throw new ServiceException("Account", "userId", id);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.igreendata.account.advisor;
 
-import com.igreendata.account.exception.IncorrectParameterException;
+import com.igreendata.account.exception.ServiceException;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.util.AccountConstant;
 import org.springframework.http.HttpStatus;
@@ -47,14 +47,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
      * @param request
      * @return ResponseEntity<Object>
      */
-    @ExceptionHandler(IncorrectParameterException.class)
+    @ExceptionHandler(ServiceException.class)
     public ResponseEntity<Object> handleIncorrectParameterException(
-            final IncorrectParameterException ex, final WebRequest request) {
+            final ServiceException ex, final WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put(AccountConstant.TIME_STAMP, LocalDateTime.now());
         body.put(AccountConstant.MESSAGE, ex.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.BAD_GATEWAY);
     }
 }
