@@ -2,9 +2,9 @@
 
 Initial requirement for this rest application .
 
-Java 11
-docker
-gradle
+1.Java 11
+2.docker
+3.gradle
 
 Start the test envirnment.
 #./gradlew startLocalEnvironment
