@@ -48,12 +48,15 @@ public class TransactionServiceImplTest {
         given(accountRepository.findAccountAccountId(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
                 assertThrows(ResourceNotFoundException.class,() ->transactionService.getDtoById(1L)) ;
+        assertThat(exception.getMessage()).isEqualTo("Transaction not found not found with accountId : '1'");
 
     }
 
     @Test
     void getTransactionWithDbException() throws Exception {
         given(accountRepository.findAccountAccountId(1L)).willThrow(QueryTimeoutException.class);
-        assertThrows(ServiceException.class,() ->transactionService.getDtoById(1L)) ;
+        ServiceException serviceException =
+                assertThrows(ServiceException.class,() ->transactionService.getDtoById(1L)) ;
+        assertThat(serviceException.getMessage()).isEqualTo("Transaction Service Error Service Exception . accountId : '1'");
     }
 }

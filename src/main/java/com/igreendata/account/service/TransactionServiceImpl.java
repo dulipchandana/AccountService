@@ -39,12 +39,12 @@ public class TransactionServiceImpl implements BankService<TransactionDto> {
             if (!transactionDtoResults.isEmpty()) {
                 return transactionDtoResults;
             } else {
-                throw new ResourceNotFoundException("Transaction", "accountId", accountId);
+                throw new ResourceNotFoundException("Transaction not found", "accountId", accountId);
             }
         } catch (ResourceNotFoundException re){
             throw re;
         } catch (Exception ex) {
-            throw new ServiceException("Transaction", "Sort", accountId);
+            throw new ServiceException("Transaction Service Error", "accountId", accountId);
 
         }
     }

@@ -33,8 +33,8 @@ public class AccountRepositoryTest {
 
     @Test
     public void findAccountByUserId_if_repository_is_empty() {
-        List<AccountDto> accountDtos = accountRepository.findAccountByUserId(5L);
-        assertThat(accountDtos.isEmpty()).isTrue();
+        List<AccountDto> accountDtoList = accountRepository.findAccountByUserId(5L);
+        assertThat(accountDtoList.isEmpty()).isTrue();
     }
 
     @Test

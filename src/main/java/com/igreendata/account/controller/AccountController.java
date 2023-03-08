@@ -5,10 +5,10 @@ import com.igreendata.account.dto.TransactionDto;
 import com.igreendata.account.service.BankService;
 import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +43,7 @@ public class AccountController {
      * @param userId
      * @return Page<AccountDto>
      */
-    @GetMapping(value = "/accounts/{userId}", produces = {"application/hal+json"})
+    @GetMapping(value = "/accounts/{userId}", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
 
         List<AccountDto> accountDtos = accountService.getDtoById(userId);
@@ -57,7 +57,7 @@ public class AccountController {
      * @param accountId
      * @return Page<TransactionDto>
      */
-    @GetMapping(value = "transactions/{accountId}", produces = {"application/hal+json"})
+    @GetMapping(value = "transactions/{accountId}", produces = {MediaTypes.HAL_JSON_VALUE})
     public CollectionModel<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
 
         List<TransactionDto> transactionDtos = transactionService.getDtoById(accountId);
