@@ -42,8 +42,7 @@ public class TransactionServiceImpl implements TransactionService {
                     .findByAccount_Id(accountId);
             if (!transactions.isEmpty()) {
                 return transactions.stream()
-                        .map(transaction -> transactionMapper
-                                .transactionToTransactionDto(transaction))
+                        .map(transactionMapper::transactionToTransactionDto)
                         .collect(Collectors.toList());
             } else {
                 throw new ResourceNotFoundException("Transaction", "accountId", accountId);

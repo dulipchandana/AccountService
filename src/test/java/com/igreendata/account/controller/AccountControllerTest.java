@@ -99,7 +99,8 @@ class AccountControllerTest {
 
     @Test
     void getTransactionsByAccountIdWithResult() throws Exception {
-        TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", "Mar.08,2023", 12D, 3D, TransactionType.Credit, "NC", 1L);
+        TransactionDto tansactionDto = new TransactionDto(1L, "test",
+                "USD", 12D,  3D, TransactionType.Credit, "NC", 1L, "Mar.08,2023");
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);
         given(transactionService.getTransactionDtoByAccountId(1L)).willReturn(transactionDtoList);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))

@@ -5,8 +5,6 @@ import lombok.Getter;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.text.SimpleDateFormat;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -17,9 +15,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 
 public class AccountDto extends RepresentationModel<AccountDto> {
-
-    private final SimpleDateFormat dateFormat
-            = new SimpleDateFormat("dd/MM/yyyy");
 
     @Getter
     private final Long accountNumber;

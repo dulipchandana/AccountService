@@ -39,8 +39,8 @@ class TransactionServiceImplTest {
 
     @Test
     void getTransactionsByAccountIdWithResult() throws Exception {
-        TransactionDto transactionDto = new TransactionDto(1L, "test", "USD", "Mar.08,2023", 12D
-                , 3D, TransactionType.Credit, "NC", 1L);
+        TransactionDto transactionDto = TransactionDto.builder().accountNumber(1L)
+                .accountName("test").currency("USD").creditAmount(12D).build();
         List<TransactionDto> transactionDtoList = List.of(transactionDto);
         Transaction transaction = Transaction.builder().build();
         List<Transaction> transactions = List.of(transaction);
