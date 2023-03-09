@@ -1,6 +1,6 @@
 package com.igreendata.account.repository;
 
-import com.igreendata.account.dto.AccountDto;
+import com.igreendata.account.entity.Account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,24 +30,22 @@ class AccountRepositoryTest {
 
     @Test
     void findAccountByUserId_if_repository_is_empty() {
-        List<AccountDto> accountDtoList = accountRepository.findAccountByUserId(5L);
-        assertThat(accountDtoList).isEmpty();
+        List<Account> accounts = accountRepository.findByUser_Id(5L);
+        assertThat(accounts).isEmpty();
     }
 
     @Test
     void findAccountByUserId_with_Data() {
-        List<AccountDto> accountDtos = accountRepository.findAccountByUserId(1L);
-        assertThat(accountDtos).hasSize(2);
-        assertThat(accountDtos.stream().anyMatch(a -> ((a.getAccountNumber() == 1D) &&
+        List<Account> accounts = accountRepository.findByUser_Id(1L);
+        assertThat(accounts).hasSize(2);
+        assertThat(accounts.stream().anyMatch(a -> ((a.getId() == 1D) &&
                 a.getAvailableBalance().equals(12.34) &&
                 a.getAccountName().equals("AUSavings23") &&
-                a.getCurrency().equals("AUD") &&
-                a.getLinks().stream().findFirst().get().getHref().equals("/api/accounts/1/transactions/")||
-                (a.getAccountNumber() == 3D) &&
+                a.getCurrencyType().getCurrency().equals("AUD") ||
+                (a.getId() == 3D) &&
                         a.getAvailableBalance().equals(1234) &&
                         a.getAccountName().equals("USSavings33") &&
-                        a.getCurrency().equals("USD") &&
-                        a.getLinks().stream().findFirst().get().getHref().equals("/api/accounts/3/transactions/"))
+                        a.getCurrencyType().getCurrency().equals("USD"))
         )).isTrue();
 
     }

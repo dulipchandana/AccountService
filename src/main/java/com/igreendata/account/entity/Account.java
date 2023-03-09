@@ -11,6 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Data
+@NoArgsConstructor
 public class Account extends BaseModel {
 
     @Id

@@ -1,8 +1,10 @@
 package com.igreendata.account.service;
 
 import com.igreendata.account.dto.AccountDto;
+import com.igreendata.account.entity.Account;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
+import com.igreendata.account.mapper.AccountMapper;
 import com.igreendata.account.repository.AccountRepository;
 import org.hibernate.QueryTimeoutException;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,19 +34,25 @@ class AccountServiceImplTest {
     @InjectMocks
     private AccountServiceImpl accountService;
 
+    @Mock
+    private AccountMapper accountMapper;
+
     @Test
     void getAccountsByUserIdWithResult() throws Exception {
-        AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", new Date(), 5D);
-        AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", new Date(), 6D);
-        List<AccountDto> acList = Arrays.asList(accountDto1, accountDto2);
-        given(accountRepository.findAccountByUserId(1L)).willReturn(acList);
+        AccountDto accountDto = new AccountDto(100L, "test2", "USD", "Current", "08/03/2023", 6D);
+        List<AccountDto> acList = List.of(accountDto);
+        Account account = Account.builder().build();
+        List<Account> accounts = Collections.singletonList(account);
+        given(accountRepository.findByUser_Id(1L)).willReturn(accounts);
+        given(accountMapper.accountToAccountDto(account)).willReturn(accountDto);
         assertThat(accountService.getAccountsByUserId(1L)).isEqualTo(acList);
-        verify(accountRepository).findAccountByUserId(1L);
+        verify(accountRepository).findByUser_Id(1L);
+        verify(accountMapper).accountToAccountDto(account);
     }
 
     @Test()
     void getAccountsByUserIdWithNoResult() {
-        given(accountRepository.findAccountByUserId(1L)).willReturn(new ArrayList());
+        given(accountRepository.findByUser_Id(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
                 assertThrows(ResourceNotFoundException.class, () -> accountService.getAccountsByUserId(1L));
         assertThat(exception.getMessage()).isEqualTo("Account not found with userId : '1'");
@@ -52,7 +60,7 @@ class AccountServiceImplTest {
 
     @Test
     void getAccountsByUserIdWithDbException() {
-        given(accountRepository.findAccountByUserId(1L)).willThrow(QueryTimeoutException.class);
+        given(accountRepository.findByUser_Id(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
                 assertThrows(ServiceException.class, () -> accountService.getAccountsByUserId(1L));
         assertThat(serviceException.getMessage()).isEqualTo("Account Service Exception . userId : '1'");

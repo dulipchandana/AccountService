@@ -1,9 +1,11 @@
 package com.igreendata.account.service;
 
 import com.igreendata.account.dto.TransactionDto;
+import com.igreendata.account.entity.Transaction;
+import com.igreendata.account.entity.TransactionType;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
-import com.igreendata.account.entity.TransactionType;
+import com.igreendata.account.mapper.TransactionMapper;
 import com.igreendata.account.repository.TransactionRepository;
 import org.hibernate.QueryTimeoutException;
 import org.junit.jupiter.api.Test;
@@ -15,12 +17,12 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -31,19 +33,27 @@ class TransactionServiceImplTest {
     @Mock
     TransactionRepository transactionRepository;
 
+    @Mock
+    TransactionMapper transactionMapper;
+
 
     @Test
     void getTransactionsByAccountIdWithResult() throws Exception {
-        TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", new Date(), 12D
+        TransactionDto transactionDto = new TransactionDto(1L, "test", "USD", "Mar.08,2023", 12D
                 , 3D, TransactionType.Credit, "NC", 1L);
-        List<TransactionDto> transactionDtoList = List.of(tansactionDto);
-        given(transactionRepository.findTransactionByAccountId(1L)).willReturn(transactionDtoList);
+        List<TransactionDto> transactionDtoList = List.of(transactionDto);
+        Transaction transaction = Transaction.builder().build();
+        List<Transaction> transactions = List.of(transaction);
+        given(transactionRepository.findByAccount_Id(1L)).willReturn(transactions);
+        given(transactionMapper.transactionToTransactionDto(transaction)).willReturn(transactionDto);
         assertThat(transactionService.getTransactionDtoByAccountId(1L)).isEqualTo(transactionDtoList);
+        verify(transactionRepository).findByAccount_Id(1L);
+        verify(transactionMapper).transactionToTransactionDto(transaction);
     }
 
     @Test
     void getTransactionWithNoResult() throws Exception {
-        given(transactionRepository.findTransactionByAccountId(1L)).willReturn(new ArrayList());
+        given(transactionRepository.findByAccount_Id(1L)).willReturn(new ArrayList());
         ResourceNotFoundException exception =
                 assertThrows(ResourceNotFoundException.class, () -> transactionService.getTransactionDtoByAccountId(1L));
         assertThat(exception.getMessage()).isEqualTo("Transaction not found with accountId : '1'");
@@ -52,7 +62,7 @@ class TransactionServiceImplTest {
 
     @Test
     void getTransactionWithDbException() throws Exception {
-        given(transactionRepository.findTransactionByAccountId(1L)).willThrow(QueryTimeoutException.class);
+        given(transactionRepository.findByAccount_Id(1L)).willThrow(QueryTimeoutException.class);
         ServiceException serviceException =
                 assertThrows(ServiceException.class, () -> transactionService.getTransactionDtoByAccountId(1L));
         assertThat(serviceException.getMessage()).isEqualTo("Transaction Service Exception . accountId : '1'");

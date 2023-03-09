@@ -2,9 +2,9 @@ package com.igreendata.account.controller;
 
 import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.dto.TransactionDto;
+import com.igreendata.account.entity.TransactionType;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
-import com.igreendata.account.entity.TransactionType;
 import com.igreendata.account.service.AccountService;
 import com.igreendata.account.service.TransactionService;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -34,8 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class AccountControllerTest {
 
-    static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -48,8 +44,8 @@ class AccountControllerTest {
     @Test
     void getAccountsByUserIdWithResult() throws Exception {
 
-        AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", formatter.parse("08/03/2023"), 5D);
-        AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", formatter.parse("08/03/2023"), 6D);
+        AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", "08/03/2023", 5D);
+        AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", "08/03/2023", 6D);
         List<AccountDto> acList = Arrays.asList(accountDto1, accountDto2);
         given(accountService.getAccountsByUserId(1L)).willReturn(acList);
         this.mockMvc.perform(get("/api/users/1/accounts/").contentType(MediaTypes.HAL_JSON))
@@ -97,13 +93,13 @@ class AccountControllerTest {
     void getAccountsByUserIdWithIncorrectParameterException() throws Exception {
         this.mockMvc.perform(get("/api/users/l/accounts/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isBadRequest());
-        verify(accountService,times(0)).getAccountsByUserId(any());
+        verify(accountService, times(0)).getAccountsByUserId(any());
 
     }
 
     @Test
     void getTransactionsByAccountIdWithResult() throws Exception {
-        TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", formatter.parse("08/03/2023"), 12D, 3D, TransactionType.Credit, "NC", 1L);
+        TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", "Mar.08,2023", 12D, 3D, TransactionType.Credit, "NC", 1L);
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);
         given(transactionService.getTransactionDtoByAccountId(1L)).willReturn(transactionDtoList);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))
@@ -139,12 +135,13 @@ class AccountControllerTest {
         verify(transactionService).getTransactionDtoByAccountId(1L);
 
     }
+
     @Test
     void getTransactionWithIncorrectParameterException() throws Exception {
         given(transactionService.getTransactionDtoByAccountId(1L)).willThrow(ServiceException.class);
         this.mockMvc.perform(get("/api/accounts/o/transactions/").contentType(MediaTypes.HAL_JSON))
                 .andExpect(status().isBadRequest());
-        verify(transactionService,times(0)).getTransactionDtoByAccountId(any());
+        verify(transactionService, times(0)).getTransactionDtoByAccountId(any());
 
     }
 

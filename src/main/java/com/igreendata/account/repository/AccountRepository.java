@@ -1,9 +1,7 @@
 package com.igreendata.account.repository;
 
-import com.igreendata.account.dto.AccountDto;
 import com.igreendata.account.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,10 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * @param userId
      * @return AccountDto
      */
-    @Query("SELECT new com.igreendata.account.dto.AccountDto(a.id,a.accountName,a.currencyType.currency," +
-            "a.accountType.accountType,a.balanceDate,a.availableBalance) " +
-            "FROM Account a WHERE a.user.id = ?1")
-    List<AccountDto> findAccountByUserId(Long userId);
+    List<Account> findByUser_Id(Long userId);
 
 
 }

@@ -1,6 +1,9 @@
 package com.igreendata.account.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,7 +12,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Builder
-public class User extends BaseModel{
+@NoArgsConstructor
+public class User extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

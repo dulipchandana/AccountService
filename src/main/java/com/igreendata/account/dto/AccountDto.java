@@ -6,7 +6,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -33,16 +32,10 @@ public class AccountDto extends RepresentationModel<AccountDto> {
 
     @Getter
     private final String accountType;
-
-    @Getter
-    private String balanceDate;
-
     @Getter
     private final Double availableBalance;
-
-    public void setBalanceDate(final Date balanceDate) {
-        this.balanceDate = dateFormat.format(balanceDate);
-    }
+    @Getter
+    private final String balanceDate;
 
     /**
      * AccountDto constructor
@@ -55,14 +48,15 @@ public class AccountDto extends RepresentationModel<AccountDto> {
      * @param availableBalance
      */
     public AccountDto(final Long accountNumber, final String accountName, final String currency,
-                      final String accountType, final Date balanceDate, final Double availableBalance) {
+                      final String accountType, final String balanceDate, final Double availableBalance) {
         this.accountType = accountType;
         this.availableBalance = availableBalance;
         this.accountNumber = accountNumber;
         this.accountName = accountName;
         this.currency = currency;
         this.add(setHateoas(accountNumber));
-        setBalanceDate(balanceDate);
+        this.balanceDate = balanceDate;
+
     }
 
     private Link setHateoas(final Long accountNumber) {

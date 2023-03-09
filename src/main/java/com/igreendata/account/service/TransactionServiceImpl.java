@@ -1,14 +1,17 @@
 package com.igreendata.account.service;
 
 import com.igreendata.account.dto.TransactionDto;
+import com.igreendata.account.entity.Transaction;
 import com.igreendata.account.exception.ResourceNotFoundException;
 import com.igreendata.account.exception.ServiceException;
+import com.igreendata.account.mapper.TransactionMapper;
 import com.igreendata.account.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * TransactionServiceImpl service implementations for transactions  .
@@ -23,6 +26,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
 
+    private final TransactionMapper transactionMapper;
+
     /**
      * Get TransactionDto list with filtering accountId
      *
@@ -33,10 +38,13 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionDto> getTransactionDtoByAccountId(final Long accountId) {
 
         try {
-            List<TransactionDto> transactionDtoResults = transactionRepository.findTransactionByAccountId
-                    (accountId);
-            if (!transactionDtoResults.isEmpty()) {
-                return transactionDtoResults;
+            List<Transaction> transactions = transactionRepository
+                    .findByAccount_Id(accountId);
+            if (!transactions.isEmpty()) {
+                return transactions.stream()
+                        .map(transaction -> transactionMapper
+                                .transactionToTransactionDto(transaction))
+                        .collect(Collectors.toList());
             } else {
                 throw new ResourceNotFoundException("Transaction", "accountId", accountId);
             }
