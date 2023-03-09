@@ -19,8 +19,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class AccountDto extends RepresentationModel<AccountDto> {
 
-    private static final SimpleDateFormat dateFormat
-            = new SimpleDateFormat("dd/MM/YYYY");
+    private final SimpleDateFormat dateFormat
+            = new SimpleDateFormat("dd/MM/yyyy");
 
     @Getter
     private final Long accountNumber;

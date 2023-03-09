@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Data
 public class ResourceNotFoundException extends RuntimeException {
 
-    private String resourceName;
-    private String fieldName;
-    private Object fieldValue;
+    private final String resourceName;
+    private final String fieldName;
+    private final Object fieldValue;
 
     /**
      * ResourceNotFoundException throws when there is no eliments in db

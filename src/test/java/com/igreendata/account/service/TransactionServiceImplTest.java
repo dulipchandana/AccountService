@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class TransactionServiceImplTest {
+class TransactionServiceImplTest {
 
     @InjectMocks
     TransactionServiceImpl transactionService;
@@ -33,7 +33,7 @@ public class TransactionServiceImplTest {
 
 
     @Test
-    public void getTransactionsByAccountIdWithResult() throws Exception {
+    void getTransactionsByAccountIdWithResult() throws Exception {
         TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", new Date(), 12D
                 , 3D, TransactionType.Credit, "NC", 1L);
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);

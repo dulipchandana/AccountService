@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @MockitoSettings(strictness = Strictness.LENIENT)
 @DataJpaTest
 @ActiveProfiles("test")
-public class AccountRepositoryTest {
+class AccountRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -29,15 +29,15 @@ public class AccountRepositoryTest {
 
 
     @Test
-    public void findAccountByUserId_if_repository_is_empty() {
+    void findAccountByUserId_if_repository_is_empty() {
         List<AccountDto> accountDtoList = accountRepository.findAccountByUserId(5L);
-        assertThat(accountDtoList.isEmpty()).isTrue();
+        assertThat(accountDtoList).isEmpty();
     }
 
     @Test
-    public void findAccountByUserId_with_Data() {
+    void findAccountByUserId_with_Data() {
         List<AccountDto> accountDtos = accountRepository.findAccountByUserId(1L);
-        assertThat(accountDtos.size()).isEqualTo(2);
+        assertThat(accountDtos).hasSize(2);
         assertThat(accountDtos.stream().anyMatch(a -> ((a.getAccountNumber() == 1D) &&
                 a.getAvailableBalance().equals(12.34) &&
                 a.getAccountName().equals("AUSavings23") &&

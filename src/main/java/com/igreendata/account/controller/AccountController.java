@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -42,11 +43,11 @@ public class AccountController {
      * @return Page<AccountDto>
      */
     @GetMapping(value = "users/{userId}/accounts/", produces = {MediaTypes.HAL_JSON_VALUE})
-    public CollectionModel<AccountDto> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
+    public CollectionModel<List<AccountDto>> getAccountsByUserId(@PathVariable(value = "userId") final Long userId) {
 
         List<AccountDto> accountDtos = accountService.getAccountsByUserId(userId);
 
-        return new CollectionModel<AccountDto>(accountDtos);
+        return new CollectionModel<List<AccountDto>>(Collections.singleton(accountDtos));
     }
 
     /**
@@ -56,11 +57,11 @@ public class AccountController {
      * @return Page<TransactionDto>
      */
     @GetMapping(value = "accounts/{accountId}/transactions/", produces = {MediaTypes.HAL_JSON_VALUE})
-    public CollectionModel<TransactionDto> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
+    public CollectionModel<List<TransactionDto>> getTransactionsByAccountId(@PathVariable(value = "accountId") final Long accountId) {
 
         List<TransactionDto> transactionDtos = transactionService.getTransactionDtoByAccountId(accountId);
         Link link = linkTo(methodOn(AccountController.class).getAccountsByUserId
                 (transactionDtos.stream().findFirst().get().getUserId())).withSelfRel();
-        return new CollectionModel<>(transactionDtos, link);
+        return new CollectionModel<List<TransactionDto>>(Collections.singleton(transactionDtos), link);
     }
 }

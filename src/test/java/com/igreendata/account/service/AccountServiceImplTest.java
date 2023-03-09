@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class AccountServiceImplTest {
+class AccountServiceImplTest {
 
     @Mock
     AccountRepository accountRepository;
@@ -33,7 +33,7 @@ public class AccountServiceImplTest {
     private AccountServiceImpl accountService;
 
     @Test
-    public void getAccountsByUserIdWithResult() throws Exception {
+    void getAccountsByUserIdWithResult() throws Exception {
         AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", new Date(), 5D);
         AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", new Date(), 6D);
         List<AccountDto> acList = Arrays.asList(accountDto1, accountDto2);

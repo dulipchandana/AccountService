@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class AccountControllerTest {
+class AccountControllerTest {
 
     static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
@@ -46,7 +46,7 @@ public class AccountControllerTest {
     private TransactionService transactionService;
 
     @Test
-    public void getAccountsByUserIdWithResult() throws Exception {
+    void getAccountsByUserIdWithResult() throws Exception {
 
         AccountDto accountDto1 = new AccountDto(99L, "test1", "AUD", "Savings", formatter.parse("08/03/2023"), 5D);
         AccountDto accountDto2 = new AccountDto(100L, "test2", "USD", "Current", formatter.parse("08/03/2023"), 6D);
@@ -102,7 +102,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void getTransactionsByAccountIdWithResult() throws Exception {
+    void getTransactionsByAccountIdWithResult() throws Exception {
         TransactionDto tansactionDto = new TransactionDto(1L, "test", "USD", formatter.parse("08/03/2023"), 12D, 3D, TransactionType.Credit, "NC", 1L);
         List<TransactionDto> transactionDtoList = List.of(tansactionDto);
         given(transactionService.getTransactionDtoByAccountId(1L)).willReturn(transactionDtoList);

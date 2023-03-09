@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @MockitoSettings(strictness = Strictness.LENIENT)
 @DataJpaTest
 @ActiveProfiles("test")
-public class TransactionRepositoryTest {
+class TransactionRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -27,15 +27,15 @@ public class TransactionRepositoryTest {
     private TransactionRepository transactionRepository;
 
     @Test
-    public void findTransactions_if_repository_is_empty() {
+    void findTransactions_if_repository_is_empty() {
         List<TransactionDto> transactionDtoList = transactionRepository.findTransactionByAccountId(7L);
-        assertThat(transactionDtoList.isEmpty()).isTrue();
+        assertThat(transactionDtoList).isEmpty();
     }
 
     @Test
-    public void findTransaction_with_Data() {
+    void findTransaction_with_Data() {
         List<TransactionDto> transactionDtoList = transactionRepository.findTransactionByAccountId(2L);
-        assertThat(transactionDtoList.size()).isEqualTo(1);
+        assertThat(transactionDtoList).hasSize(1);
         assertThat(transactionDtoList.stream().anyMatch(b -> (b.getAccountNumber() == 2D) &&
                 b.getAccountName().equals("SGSavings2334") &&
                 b.getCurrency().equals("SGD") &&

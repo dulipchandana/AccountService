@@ -7,6 +7,7 @@ package com.igreendata.account.util;
  */
 public final class AccountConstant {
 
+    private AccountConstant() {}
     /**page definition for swagger query param**/
     public static final String PAGE = "page";
 

@@ -14,8 +14,8 @@ import java.util.Date;
  */
 public class TransactionDto extends RepresentationModel<TransactionDto> {
 
-    private static final SimpleDateFormat dateFormat
-            = new SimpleDateFormat("MMM.dd,YYYY");
+    private final SimpleDateFormat dateFormat
+            = new SimpleDateFormat("MMM.dd,yyyy");
 
     @Getter
     private final Long accountNumber;
