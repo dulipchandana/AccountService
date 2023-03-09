@@ -2,6 +2,7 @@ package com.igreendata.account.dto;
 
 import com.igreendata.account.entity.TransactionType;
 import lombok.Getter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  *
  * @author Dulip Chandana
  */
-public class TransactionDto {
+public class TransactionDto extends RepresentationModel<TransactionDto> {
 
     private static final SimpleDateFormat dateFormat
             = new SimpleDateFormat("MMM.dd,YYYY");
@@ -25,30 +26,17 @@ public class TransactionDto {
     @Getter
     private final String currency;
     @Getter
-    private String valueDate;
-
-    @Getter
     private final Double creditAmount;
-
     @Getter
     private final Double debitAmount;
     @Getter
     private final TransactionType transactionType;
     @Getter
     private final String transactionNarrative;
-
     @Getter
     private final Long userId;
-
-    /**
-     * Set Value date with date for mat
-     *
-     * @param valueDate
-     */
-    public void setValueDate(Date valueDate) {
-        this.valueDate = dateFormat.format(valueDate);
-        ;
-    }
+    @Getter
+    private String valueDate;
 
     /**
      * TransactionDto constructor
@@ -74,5 +62,14 @@ public class TransactionDto {
         this.transactionType = transactionType;
         this.transactionNarrative = transactionNarrative;
         this.userId = userId;
+    }
+
+    /**
+     * Set Value date with date for mat
+     *
+     * @param valueDate
+     */
+    public void setValueDate(final Date valueDate) {
+        this.valueDate = dateFormat.format(valueDate);
     }
 }
