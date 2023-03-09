@@ -22,7 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -86,8 +88,16 @@ public class AccountControllerTest {
     void getAccountsByUserIdWithDbException() throws Exception {
         given(accountService.getAccountsByUserId(1L)).willThrow(ServiceException.class);
         this.mockMvc.perform(get("/api/users/1/accounts/").contentType(MediaTypes.HAL_JSON))
-                .andExpect(status().isBadGateway());
+                .andExpect(status().isServiceUnavailable());
         verify(accountService).getAccountsByUserId(1L);
+
+    }
+
+    @Test
+    void getAccountsByUserIdWithIncorrectParameterException() throws Exception {
+        this.mockMvc.perform(get("/api/users/l/accounts/").contentType(MediaTypes.HAL_JSON))
+                .andExpect(status().isBadRequest());
+        verify(accountService,times(0)).getAccountsByUserId(any());
 
     }
 
@@ -125,8 +135,16 @@ public class AccountControllerTest {
     void getTransactionWithDbException() throws Exception {
         given(transactionService.getTransactionDtoByAccountId(1L)).willThrow(ServiceException.class);
         this.mockMvc.perform(get("/api/accounts/1/transactions/").contentType(MediaTypes.HAL_JSON))
-                .andExpect(status().isBadGateway());
+                .andExpect(status().isServiceUnavailable());
         verify(transactionService).getTransactionDtoByAccountId(1L);
+
+    }
+    @Test
+    void getTransactionWithIncorrectParameterException() throws Exception {
+        given(transactionService.getTransactionDtoByAccountId(1L)).willThrow(ServiceException.class);
+        this.mockMvc.perform(get("/api/accounts/o/transactions/").contentType(MediaTypes.HAL_JSON))
+                .andExpect(status().isBadRequest());
+        verify(transactionService,times(0)).getTransactionDtoByAccountId(any());
 
     }
 

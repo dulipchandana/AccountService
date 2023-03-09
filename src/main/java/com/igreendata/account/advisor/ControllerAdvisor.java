@@ -56,7 +56,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         body.put(AccountConstant.TIME_STAMP, LocalDateTime.now());
         body.put(AccountConstant.MESSAGE, ex.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_GATEWAY);
+        return new ResponseEntity<>(body, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     /**
